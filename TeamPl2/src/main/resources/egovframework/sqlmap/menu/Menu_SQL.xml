@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="Menu">
+	<typeAlias alias="menu" type="egovframework.menu.service.MenuVO" />
+	<resultMap id="menuResult" class="menu">
+		<result property="mNo" column="mNo" />
+		<result property="id" column="id" />
+		<result property="mImage" column="mImage" />
+		<result property="mUploadDate" column="mUploadDate" />
+		<result property="mUpdateDate" column="mUpdateDate" />
+		<result property="mYear" column="mYear" />
+		<result property="month" column="month" />
+		<result property="mLike" column="mlike" />
+	</resultMap>
+	<insert id="MenuDAO.insertMenu">
+		INSERT INTO Menu(mNo, id, mImage, mUploadDate,
+		mUpdateDate, mYear, month, mlike)
+		values(#mNo#, #id#, #mImage#, NOW(), NOW(), #mYear#,
+		#month#, 0)
+	</insert>
+	<update id="MenuDAO.updateMenu">
+		update menu set mImage = #mImage#, mUpdateDate = NOW(), 
+		mYear = #mYear#, MONTH = #month#
+		WHERE mNo = #mNo#
+	</update>
+	<delete id="MenuDAO.deleteMenu">delete from menu where mNo = #mNo#</delete>
+	<select id="MenuDAO.selectMenu" resultMap="menuResult">
+		select * from menu
+		where mNo = #mNo#
+	</select>
+	<select id="MenuDAO.selectMenuList" resultMap="menuResult">
+		select * from
+		menu where 1 = 1
+		<isEqual prepend="and" property="searchCondition"
+			compareValue="mYear">
+			mYear like '%' || #searchKeyword# || '%'
+		</isEqual>
+		<isEqual prepend="and" property="searchCondition"
+			compareValue="month">
+			month like '%' || #searchKeyword# || '%'
+		</isEqual>
+		order by id DESC
+	</select>
+
+</sqlMap>

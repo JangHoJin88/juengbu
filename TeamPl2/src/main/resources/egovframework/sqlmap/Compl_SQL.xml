@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="Compl">
+	<typeAlias alias="compl" type="egovframework.compl.service.ComplVO"/>
+	
+	<resultMap class="compl" id="complResult">
+		<result property="cNo" column="Cno"/>
+		<result property="cTitle" column="Ctitle"/>
+		<result property="cWriter" column="CWriter" />
+		<result property="cContent" column="CContent"/>
+		<result property="view" column="VIEW"/>
+		<result property="cUploadDate" column="CUploadDate"/>
+		<result property="secret" column="secret"/>
+	</resultMap>
+	
+	<insert id="ComplDAO.insertCompl">
+		INSERT INTO COMPL(Ctitle,CWriter,CContent,secret) VALUES (
+			#cTitle#,
+			#cWriter#,
+			#cContent#,
+			#secret#
+		)
+	</insert>
+	
+	<update id="ComplDAO.updateCompl">
+		UPDATE COMPL
+		SET Ctitle=#cTitle#,
+			CContent=#cContent#,
+			secret=#secret#
+		where Cno=#cNo#
+	</update>
+	
+	<delete id="ComplDAO.deleteCompl">
+		DELETE FROM COMPL
+		WHERE Cno=#cNo#
+	</delete>
+	
+	<select id="ComplDAO.selectCompl" resultMap="complResult">
+		SELECT Cno,Ctitle,CWriter,CContent,VIEW,CUploadDate,secret
+		FROM Compl
+		WHERE Cno=#cNo#
+	</select>
+	
+	<select id="ComplDAO.selectComplList" resultMap="complResult">
+			select * from compl order by Cno desc
+	</select>
+	
+	<update id="ComplDAO.viewCount">
+		UPDATE COMPL
+		SET VIEW=VIEW+1
+		WHERE Cno=#cNo#
+	</update>
+
+</sqlMap>
